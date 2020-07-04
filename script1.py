@@ -14,14 +14,31 @@ def insert(item, quantity, price):
     conn.commit()
     conn.close()
 
-insert("Coffee Cup", 10, 5)
+#insert("Coffee Cup", 10, 5)
 
 def view():
-    conn = sqlite3.connect("lite.db")
+    conn = sqlite3.Connection("lite.db")
     cur = conn.cursor()
     cur.execute("SELECT * FROM store")
     rows = cur.fetchall()
     conn.close()
     return rows
+
+def delete(item):
+    conn = sqlite3.connect("lite.db")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM store WHERE item = ?", (item,))
+    conn.commit()
+    conn.close()
+
+def update(quantity, price, item):
+    conn = sqlite3.connect("lite.db")
+    cur = conn.cursor()
+    cur.execute("UPDATE store SET quantity = ?, price = ? WHERE item = ?", (quantity, price, item))
+    conn.commit()
+    conn.close()
+
+delete("Wine Glass")
+update(11, 6, "Water Glass")
 
 print(view())
